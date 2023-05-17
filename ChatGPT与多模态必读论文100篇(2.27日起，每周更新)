@@ -1,1 +1,84 @@
 ChatGPT与多模态必读论文100篇
+
+
+
+
+
+``` python
+2023，大模型与ChatGPT火得如日中天；
+想要较好的了解这块技术，最好的方式就是读论文；
+而，读什么论文呢？如果选择只读100篇论文，这100篇是什么？
+基于此，本文以《ChatGPT与多模态必读论文100篇》推荐笔者及July老师认为最该读的100篇
+```
+
+
+
+## 第一部分 OpenAI/Google的基础语言大模型
+**【第001篇】GPT，从最原始GPT开始了解**
+[Improving Language Understanding by Generative Pre-Training](https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf "Improving Language Understanding by Generative Pre-Training")
+
+**【第002篇】GPT2，从GPT进化到GPT2**
+[Language Models are Unsupervised Multitask Learners](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf "Language Models are Unsupervised Multitask Learners")
+
+**【第003篇】GPT3原始论文，再次进化到GPT3**
+[Language Models are Few-Shot Learners](https://arxiv.org/pdf/2005.14165 "Language Models are Few-Shot Learners")
+
+**【第004篇】让GPT3再次进化，InstructGPT原始论文**
+[Training language models to follow instructions with human feedback](https://arxiv.org/pdf/2203.02155 "Training language models to follow instructions with human feedback")
+
+**【第005篇】T5模型，19年10月Google发布**
+[Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer](https://www.jmlr.org/papers/volume21/20-074/20-074 "Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer")
+虽也基于transformer，但区别于BERT的编码器架构与GPT的解码器架构，T5是transformer的encoder-decoder架构
+用的750G的训练数据，其训练方法则为：BERT-style的MASK法/replace span(小段替换)/Drop法，以及类似BERT对文本的15%做破坏、且replace span时对3的小段破坏
+
+**【第006篇】LaMDA，论文发布于22年1月，显示LaMDA的参数高达137B，用的transformer decoder架构**
+ [Language Models for Dialog Applications](https://arxiv.org/pdf/2201.08239 "Language Models for Dialog Applications")
+21年5月，Google对外宣布内部正在研发对话模型LaMDA，基于transformer decoder架构，在微调阶段 使用58K的对话数据，过程类似真人的对话过程，给定一个Query，比如 How old is Rafael Nadal? ，如果人知道答案，那么直接回答35岁即可，如果不知道，则需要去 Research 一下，借助搜索引擎找到答案，然后再回答35岁
+
+**【第007篇】FLAN大模型，21年9月Google提出，其基于LaMDA-PT做Instruction Fine-Tuning**
+[Finetuned Language Models Are Zero-Shot Learners](https://arxiv.org/pdf/2109.01652 "Finetuned Language Models Are Zero-Shot Learners")
+FLAN is the instruction-tuned version of LaMDA-PT
+
+**【第008篇】PaLM模型，22年4月Google发布，基于Transformer decoder架构**
+[PaLM: Scaling Language Modeling with Pathways](https://arxiv.org/pdf/2204.02311 "PaLM: Scaling Language Modeling with Pathways")
+22年3月，Google的Barham等人发布了Pathways系统，用于更高效地训练大型模型
+Pathways 的愿景 —— 一个很接近人脑的框架：一个模型，可以做多任务，多模态
+且在做任务时，只是 sparsely activated，只使用一部分的参数
+参数规模最大的版本达到惊人的5400亿参数(8B 62B 540B)，使用multi-query注意力、SwiGLU激活函数以及RoPE位置嵌入
+且在每个Transformer块中使用 "平行 "表述(Wang & Komatsuzaki,2021)
+是Google的Pathways架构或OpenAI GPT2/3提出的小样本学习的进一步扩展
+
+PaLM首次展示了Pathways的大规模使用——能够以高效的方式在数千或数万个加速器芯片上训练一个模型
+具体来说，通过Pathways，PaLM 540B在两个通过数据中心网络连接的TPU v4 Pod上训练，使用模型和数据并行的组合，在每个Pod中使用3072个TPU v4芯片，连接到768台主机，能够有效地将训练扩展到6144个芯片，而不需要使用任何pipeline并行，其效率水平是以前这种规模的模型所不能达到的
+
+以前的大多数大型语言模型
+  要么是在单个TPU系统上训练的(比如GLaM by Du等人2021年，LaMDA by Thopilan等人)
+  要么是使用由Huang等人在2019年提出的pipeline并行，从而在GPU集群(Megatron-Turing NLG 530B by Smith等人2022年)，或多个TPU v3 pod(Gopher by Rae等人2021年)上扩展，最大规模为4096个TPU v3芯片
+
+另，在自然语言、代码和数学推理等任务中表现的都很不错
+此外，预训练数据集由一个7800亿个token组成的语料库，该数据集是由过滤过的网页(占比27%)、书籍(占比13%)、Wikipedia(占比4%)、新闻文章(占比1%)、Github源代码(占比5%，包括Java、HTML、Javascript、Python、PHP、C#、XML、C++和C，总计196GB的源代码)，和社交媒体对话(占比50%)组成的，这个数据集是也用于训练LaMDA和GLaM
+
+**【第009篇】RLAIF**
+[Constitutional AI: Harmlessness from AI Feedback](https://arxiv.org/pdf/2212.08073 "Constitutional AI: Harmlessness from AI Feedback")
+OpenAI之前一副总裁离职搞了个ChatGPT的竞品，ChatGPT用人类偏好训练RM再RL(即RLHF)，Claude则基于AI偏好模型训练RM再RL(即RLAIF) 
+
+**【第010篇】Sparrow，DeepMind的Sparrow，发表时间稍晚于instructGPT**
+[Improving alignment of dialogue agents via targeted human judgements](https://arxiv.org/pdf/2209.14375 "Improving alignment of dialogue agents via targeted human judgements")
+其大致的技术思路和框架与 instructGPT 的三阶段基本类似，但Sparrow 中把奖励模型分为两个不同 RM 的思路
+
+**【第011篇】GPT4，当前王牌，支持多模态**
+ [GPT-4 Technical Report](https://arxiv.org/pdf/2303.08774 "GPT-4 Technical Report")
+增加了多模态能力的GPT4的技术报告
+
+## 第二部分 大语言模型的关键技术
+**【第012篇】Transformer原始论文**
+[Attention Is All You Need](https://arxiv.org/pdf/1706.03762 "Attention Is All You Need")
+
+
+
+
+
+
+```
+原作者为：[v_JULY_v](https://blog.csdn.net/v_JULY_v "v_JULY_v")
+```
